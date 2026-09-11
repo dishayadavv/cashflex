@@ -1,0 +1,643 @@
+<div class="analytics-page">
+
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+
+      <p class="eyebrow">
+        FINANCIAL INSIGHTS
+      </p>
+
+      <h1>
+        Analytics
+      </h1>
+
+      <p class="subtitle">
+        Understand where your money is going and how you're doing.
+      </p>
+
+    </div>
+
+
+    <div class="period">
+
+      <span>
+        PERIOD
+      </span>
+
+      <strong>
+        September 2026
+      </strong>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- KPI CARDS -->
+
+  <section class="kpi-grid">
+
+
+    <!-- INCOME -->
+
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+
+        <span>
+          INCOME
+        </span>
+
+        <div class="kpi-icon income">
+          ↗️
+        </div>
+
+      </div>
+
+
+      <strong>
+
+        {{ currencySymbol }}{{ displayIncome | number:'1.0-2' }}
+
+      </strong>
+
+
+      <small>
+        Total money received
+      </small>
+
+    </div>
+
+
+
+    <!-- EXPENSES -->
+
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+
+        <span>
+          EXPENSES
+        </span>
+
+        <div class="kpi-icon expense">
+          ↘️
+        </div>
+
+      </div>
+
+
+      <strong>
+
+        {{ currencySymbol }}{{ displayExpenses | number:'1.0-2' }}
+
+      </strong>
+
+
+      <small>
+        Total money spent
+      </small>
+
+    </div>
+
+
+
+    <!-- SAVINGS -->
+
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+
+        <span>
+          SAVINGS
+        </span>
+
+        <div class="kpi-icon savings">
+          ◇
+        </div>
+
+      </div>
+
+
+      <strong>
+
+        {{ currencySymbol }}{{ displaySavings | number:'1.0-2' }}
+
+      </strong>
+
+
+      <small>
+        {{ savingsRate }}% savings rate
+      </small>
+
+    </div>
+
+
+
+    <!-- AVERAGE -->
+
+    <div class="kpi-card">
+
+      <div class="kpi-top">
+
+        <span>
+          AVG. SPENDING
+        </span>
+
+        <div class="kpi-icon neutral">
+          ∼
+        </div>
+
+      </div>
+
+
+      <strong>
+
+        {{ currencySymbol }}{{ displayAverageMonthlyExpense | number:'1.0-2' }}
+
+      </strong>
+
+
+      <small>
+        Average monthly expense
+      </small>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- MAIN CHART AREA -->
+
+  <div class="analytics-grid">
+
+
+    <!-- MONTHLY TREND -->
+
+    <section class="analytics-card trend-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <p class="card-label">
+            {{ chartPeriodLabel }}
+          </p>
+
+          <h2>
+            {{ chartTitle }}
+          </h2>
+
+        </div>
+
+
+        <!-- PERIOD SWITCHER -->
+
+        <div class="period-switcher">
+
+          <button
+            type="button"
+            [class.active]="selectedPeriod === 'weekly'"
+            (click)="setAnalysisPeriod('weekly')"
+          >
+            Weekly
+          </button>
+
+
+          <button
+            type="button"
+            [class.active]="selectedPeriod === 'monthly'"
+            (click)="setAnalysisPeriod('monthly')"
+          >
+            Monthly
+          </button>
+
+
+          <button
+            type="button"
+            [class.active]="selectedPeriod === 'sixMonths'"
+            (click)="setAnalysisPeriod('sixMonths')"
+          >
+            6 Months
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- LEGEND -->
+
+      <div class="legend">
+
+        <span>
+
+          <i class="income-dot"></i>
+
+          Income
+
+        </span>
+
+
+        <span>
+
+          <i class="expense-dot"></i>
+
+          Expenses
+
+        </span>
+
+      </div>
+
+
+
+      <div class="chart-area">
+
+        <div class="chart-y">
+
+          <span>
+            {{ currencySymbol }}32k
+          </span>
+
+          <span>
+            {{ currencySymbol }}24k
+          </span>
+
+          <span>
+            {{ currencySymbol }}16k
+          </span>
+
+          <span>
+            {{ currencySymbol }}8k
+          </span>
+
+          <span>
+            {{ currencySymbol }}0
+          </span>
+
+        </div>
+
+
+
+        <div class="bar-chart">
+
+          @for (
+            month of monthlyData;
+            track $index
+          ) {
+
+            <div class="month-column">
+
+              <div class="bars">
+
+                <div
+                  class="bar income-bar"
+                  [style.height.%]="
+                    getChartHeight(month.income)
+                  "
+                  title="Income"
+                ></div>
+
+
+                <div
+                  class="bar expense-bar"
+                  [style.height.%]="
+                    getChartHeight(month.expenses)
+                  "
+                  title="Expenses"
+                ></div>
+
+              </div>
+
+
+              <span>
+                {{ month.month }}
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- SPENDING BREAKDOWN -->
+
+    <section class="analytics-card category-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <p class="card-label">
+            THIS MONTH
+          </p>
+
+          <h2>
+            Spending breakdown
+          </h2>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="category-list">
+
+        @for (
+          category of categories;
+          track category.name
+        ) {
+
+          <div class="category-row">
+
+
+            <div class="category-left">
+
+              <div class="category-icon">
+
+                {{ category.icon }}
+
+              </div>
+
+
+              <div>
+
+                <strong>
+                  {{ category.name }}
+                </strong>
+
+                <small>
+
+                  {{ category.percentage }}% of spending
+
+                </small>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="category-right">
+
+              <strong>
+
+                {{ currencySymbol }}{{ getCategoryDisplayAmount(category) | number:'1.0-2' }}
+
+              </strong>
+
+
+              <div class="mini-track">
+
+                <div
+                  class="mini-fill"
+                  [style.width.%]="category.percentage"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+
+
+      <div class="category-insight">
+
+        <span>
+          Highest spending
+        </span>
+
+
+        <strong>
+
+          {{ highestCategory.name }}
+
+          ·
+
+          {{ currencySymbol }}{{ highestCategoryDisplayAmount | number:'1.0-2' }}
+
+        </strong>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- FINANCIAL HEALTH -->
+
+  <section class="health-card">
+
+    <div class="health-left">
+
+      <p class="card-label">
+        FINANCIAL HEALTH
+      </p>
+
+
+      <h2>
+        You're keeping more than you're spending.
+      </h2>
+
+
+      <p>
+
+        Your current savings rate is
+
+        <strong>
+          {{ savingsRate }}%
+        </strong>.
+
+        That's a healthy sign that your income is comfortably
+        covering your current expenses.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="health-score">
+
+      <div
+        class="score-circle"
+        [style.--score]="savingsRate"
+      >
+
+        <strong>
+          {{ savingsRate }}%
+        </strong>
+
+        <span>
+          saved
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- INSIGHTS -->
+
+  <section class="insights-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <p class="eyebrow">
+          MONEY NOTES
+        </p>
+
+        <h2>
+          Your insights
+        </h2>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="insight-grid">
+
+
+      <!-- SAVINGS -->
+
+      <div class="insight-card">
+
+        <div class="insight-icon">
+          ↑
+        </div>
+
+
+        <div>
+
+          <span>
+            SAVINGS
+          </span>
+
+
+          <h3>
+
+            You're saving
+            {{ savingsRate }}%
+            of your income.
+
+          </h3>
+
+
+          <p>
+
+            Keep building this habit and your future goals
+            become easier to reach.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- WATCH -->
+
+      <div class="insight-card">
+
+        <div class="insight-icon">
+          ◇
+        </div>
+
+
+        <div>
+
+          <span>
+            WATCH
+          </span>
+
+
+          <h3>
+
+            {{ highestCategory.name }}
+            is your biggest expense.
+
+          </h3>
+
+
+          <p>
+
+            Review this category if you want to create
+            more room for savings.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- BALANCE -->
+
+      <div class="insight-card">
+
+        <div class="insight-icon">
+          ✓
+        </div>
+
+
+        <div>
+
+          <span>
+            BALANCE
+          </span>
+
+
+          <h3>
+            Your income is comfortably ahead.
+          </h3>
+
+
+          <p>
+
+            You currently have
+
+            {{ currencySymbol }}{{ displaySavings | number:'1.0-2' }}
+
+            left after recorded expenses.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,202 @@
+@if (isAuthPage()) {
+
+  <router-outlet />
+
+} @else {
+
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- BRAND -->
+      <div class="brand">
+        <div class="brand-mark">₹</div>
+
+        <div class="brand-text">
+          <strong>CashFlex</strong>
+          <span>Smart money planner</span>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <nav class="navigation">
+
+        <p class="nav-label">OVERVIEW</p>
+
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">⌂</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a
+          routerLink="/transactions"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">↔</span>
+          <span>Transactions</span>
+        </a>
+
+        <p class="nav-label nav-label-spaced">PLAN</p>
+
+        <a
+          routerLink="/budget"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">◫</span>
+          <span>Budget</span>
+        </a>
+
+        <a
+          routerLink="/goals"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">◇</span>
+          <span>Goals</span>
+        </a>
+
+        <p class="nav-label nav-label-spaced">INSIGHTS</p>
+
+        <a
+          routerLink="/analytics"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">⌁</span>
+          <span>Analytics</span>
+        </a>
+
+        <p class="nav-label nav-label-spaced">ACCOUNT</p>
+
+        <a
+          routerLink="/settings"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <span class="nav-icon">⚙</span>
+          <span>Settings</span>
+        </a>
+
+      </nav>
+
+      <!-- QUICK ACTIONS -->
+      <div class="quick-actions">
+
+        <p class="quick-label">QUICK ADD</p>
+
+        <div class="quick-buttons">
+
+          <button
+            type="button"
+            class="quick-button expense"
+          >
+            <span>−</span>
+            Expense
+          </button>
+
+          <button
+            type="button"
+            class="quick-button income"
+          >
+            <span>+</span>
+            Income
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- PROFILE -->
+      <div class="profile-section">
+
+        <button
+          type="button"
+          class="profile"
+          (click)="toggleAccountMenu()"
+          [attr.aria-expanded]="accountMenuOpen"
+        >
+
+          <div class="profile-avatar">
+            {{ userName.charAt(0).toUpperCase() }}
+          </div>
+
+          <div class="profile-info">
+            <strong>{{ userName }}</strong>
+            <small>Personal account</small>
+          </div>
+
+          <span
+            class="profile-chevron"
+            [class.open]="accountMenuOpen"
+          >
+            ›
+          </span>
+
+        </button>
+
+        @if (accountMenuOpen) {
+
+          <div class="account-menu">
+
+            <div class="account-menu-header">
+
+              <div class="account-menu-avatar">
+                {{ userName.charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="account-menu-user">
+                <strong>{{ userName }}</strong>
+                <span>
+                  {{ userEmail || 'Personal account' }}
+                </span>
+              </div>
+
+            </div>
+
+            <div class="account-menu-divider"></div>
+
+            <button
+              type="button"
+              class="account-menu-item"
+              (click)="openSettings()"
+            >
+              <span class="account-menu-icon">⚙</span>
+              <span>Account settings</span>
+            </button>
+
+            <button
+              type="button"
+              class="account-menu-item logout-item"
+              (click)="logout()"
+              [disabled]="loggingOut"
+            >
+              <span class="account-menu-icon">↪</span>
+
+              <span>
+                {{ loggingOut ? 'Signing out...' : 'Log out' }}
+              </span>
+            </button>
+
+          </div>
+
+        }
+
+      </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+
+  </div>
+
+}

@@ -1,0 +1,595 @@
+<div class="settings-page">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
+  <header class="page-header">
+
+    <div>
+
+      <p class="eyebrow">
+        CASHFLEX PREFERENCES
+      </p>
+
+      <h1>
+        Settings
+      </h1>
+
+      <p class="page-subtitle">
+        Manage your profile, preferences and financial settings.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       LOADING
+       ========================================== -->
+
+  <div
+    class="loading-state"
+    *ngIf="loading"
+  >
+
+    <div class="loading-spinner"></div>
+
+    <p>
+      Loading your settings...
+    </p>
+
+  </div>
+
+
+  <!-- ==========================================
+       CONTENT
+       ========================================== -->
+
+  <div
+    class="settings-content"
+    *ngIf="!loading"
+  >
+
+
+    <!-- SUCCESS MESSAGE -->
+
+    <div
+      class="success-message"
+      *ngIf="showSavedMessage"
+    >
+
+      <span class="message-icon">
+        ✓
+      </span>
+
+      <span>
+        {{ successMessage }}
+      </span>
+
+    </div>
+
+
+    <!-- ERROR MESSAGE -->
+
+    <div
+      class="error-message"
+      *ngIf="errorMessage"
+    >
+
+      <span class="message-icon">
+        !
+      </span>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+    </div>
+
+
+    <!-- ==========================================
+         PROFILE
+         ========================================== -->
+
+    <section class="settings-section">
+
+      <div class="section-heading">
+
+        <div class="section-icon">
+          ◯
+        </div>
+
+        <div>
+
+          <h2>
+            Profile
+          </h2>
+
+          <p>
+            Your personal information.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="settings-card">
+
+        <div class="form-grid">
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="name">
+              Full name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              [(ngModel)]="name"
+              placeholder="Enter your name"
+            />
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label for="email">
+              Email address
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="email"
+              placeholder="Enter your email"
+            />
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         FINANCIAL PREFERENCES
+         ========================================== -->
+
+    <section class="settings-section">
+
+      <div class="section-heading">
+
+        <div class="section-icon">
+          ₹
+        </div>
+
+        <div>
+
+          <h2>
+            Financial preferences
+          </h2>
+
+          <p>
+            Customize how CashFlex displays your finances.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="settings-card">
+
+
+        <!-- CURRENCY -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Currency
+            </h3>
+
+            <p>
+              Choose the currency used throughout CashFlex.
+            </p>
+
+          </div>
+
+
+          <div class="setting-control">
+
+            <select
+              [(ngModel)]="currency"
+            >
+
+              <option value="INR">
+                INR — Indian Rupee
+              </option>
+
+              <option value="USD">
+                USD — US Dollar
+              </option>
+
+              <option value="EUR">
+                EUR — Euro
+              </option>
+
+              <option value="GBP">
+                GBP — British Pound
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="setting-divider"></div>
+
+
+        <!-- MONTHLY BUDGET -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Monthly budget
+            </h3>
+
+            <p>
+              Set the amount you plan to spend each month.
+            </p>
+
+          </div>
+
+
+          <div class="setting-control amount-control">
+
+            <span class="currency-prefix">
+              {{ currencySymbol }}
+            </span>
+
+            <input
+              type="number"
+              [(ngModel)]="monthlyBudget"
+              min="0"
+              placeholder="20000"
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         NOTIFICATIONS
+         ========================================== -->
+
+    <section class="settings-section">
+
+      <div class="section-heading">
+
+        <div class="section-icon">
+          ♢
+        </div>
+
+        <div>
+
+          <h2>
+            Notifications
+          </h2>
+
+          <p>
+            Choose which updates you want to receive.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="settings-card">
+
+
+        <!-- NOTIFICATIONS -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Notifications
+            </h3>
+
+            <p>
+              Receive important updates from CashFlex.
+            </p>
+
+          </div>
+
+
+          <label class="toggle">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="notifications"
+            />
+
+            <span class="toggle-slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="setting-divider"></div>
+
+
+        <!-- BUDGET ALERTS -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Budget alerts
+            </h3>
+
+            <p>
+              Get notified when you are approaching your budget limit.
+            </p>
+
+          </div>
+
+
+          <label class="toggle">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="budgetAlerts"
+            />
+
+            <span class="toggle-slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="setting-divider"></div>
+
+
+        <!-- WEEKLY SUMMARY -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Weekly summary
+            </h3>
+
+            <p>
+              Receive a summary of your weekly spending.
+            </p>
+
+          </div>
+
+
+          <label class="toggle">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="weeklySummary"
+            />
+
+            <span class="toggle-slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         DATA MANAGEMENT
+         ========================================== -->
+
+    <section class="settings-section">
+
+      <div class="section-heading">
+
+        <div class="section-icon">
+          □
+        </div>
+
+        <div>
+
+          <h2>
+            Data management
+          </h2>
+
+          <p>
+            Manage and export your CashFlex information.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="settings-card">
+
+
+        <!-- EXPORT -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Export your data
+            </h3>
+
+            <p>
+              Download your transactions, budgets, goals and preferences.
+            </p>
+
+          </div>
+
+
+          <button
+            class="secondary-button"
+            type="button"
+            [disabled]="exporting"
+            (click)="exportData()"
+          >
+
+            {{ exporting ? 'Exporting...' : 'Export' }}
+
+          </button>
+
+        </div>
+
+
+        <div class="setting-divider"></div>
+
+
+        <!-- RESET -->
+
+        <div class="setting-row">
+
+          <div class="setting-info">
+
+            <h3>
+              Reset settings
+            </h3>
+
+            <p>
+              Reload your saved preferences.
+            </p>
+
+          </div>
+
+
+          <button
+            class="secondary-button"
+            type="button"
+            [disabled]="saving || exporting"
+            (click)="resetSettings()"
+          >
+
+            Reset
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         ABOUT
+         ========================================== -->
+
+    <section class="settings-section">
+
+      <div class="section-heading">
+
+        <div class="section-icon">
+          i
+        </div>
+
+        <div>
+
+          <h2>
+            About CashFlex
+          </h2>
+
+          <p>
+            Your personal financial planning workspace.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="about-card">
+
+        <div class="about-mark">
+          CF
+        </div>
+
+
+        <div class="about-content">
+
+          <h3>
+            CashFlex
+          </h3>
+
+          <p>
+            A simple and elegant way to understand,
+            organize and improve your finances.
+          </p>
+
+          <span class="version">
+            Version 1.0
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         SAVE
+         ========================================== -->
+
+    <div class="settings-actions">
+
+      <button
+        class="primary-button"
+        type="button"
+        [disabled]="saving || exporting"
+        (click)="saveSettings()"
+      >
+
+        {{ saving ? 'Saving...' : 'Save changes' }}
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,753 @@
+<div class="budget-page">
+
+  <!-- ==========================================
+       HEADER
+  =========================================== -->
+
+  <header class="page-header">
+
+    <div>
+
+      <p class="eyebrow">
+        MONTHLY PLANNING
+      </p>
+
+      <h1>
+        Budget
+      </h1>
+
+      <p class="page-subtitle">
+        Give every rupee a purpose and stay ahead of your spending.
+      </p>
+
+    </div>
+
+
+    <button
+      class="primary-button"
+      type="button"
+      (click)="openAddBudget()"
+    >
+
+      <span>
+        +
+      </span>
+
+      Add budget
+
+    </button>
+
+  </header>
+
+
+
+  <!-- ==========================================
+       LOADING
+  =========================================== -->
+
+  @if (loading) {
+
+    <section class="state-card">
+
+      <div class="loader"></div>
+
+      <h3>
+        Loading your budgets...
+      </h3>
+
+      <p>
+        We're getting your personal budget data.
+      </p>
+
+    </section>
+
+  }
+
+
+
+  <!-- ==========================================
+       ERROR
+  =========================================== -->
+
+  @else if (errorMessage) {
+
+    <section class="state-card error-card">
+
+      <div class="state-icon">
+        !
+      </div>
+
+      <h3>
+        Something went wrong
+      </h3>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        class="secondary-button"
+        type="button"
+        (click)="loadBudgets()"
+      >
+
+        Try again
+
+      </button>
+
+    </section>
+
+  }
+
+
+
+  <!-- ==========================================
+       EMPTY STATE
+  =========================================== -->
+
+  @else if (budgets.length === 0) {
+
+    <section class="state-card empty-card">
+
+      <div class="empty-icon">
+        {{ currencySymbol }}
+      </div>
+
+      <p class="eyebrow">
+        YOUR FIRST STEP
+      </p>
+
+      <h2>
+        Create your first budget
+      </h2>
+
+      <p>
+        Set a spending limit for categories like food,
+        transport, shopping or entertainment.
+      </p>
+
+      <button
+        class="primary-button"
+        type="button"
+        (click)="openAddBudget()"
+      >
+
+        <span>
+          +
+        </span>
+
+        Create budget
+
+      </button>
+
+    </section>
+
+  }
+
+
+
+  <!-- ==========================================
+       MAIN CONTENT
+  =========================================== -->
+
+  @else {
+
+    <!-- ========================================
+         OVERVIEW
+    ========================================= -->
+
+    <section class="overview-card">
+
+      <div class="overview-main">
+
+        <p class="eyebrow">
+          TOTAL MONTHLY BUDGET
+        </p>
+
+        <div class="overview-amount">
+
+          {{ currencySymbol }}{{ displayTotalBudget | number:'1.0-0' }}
+
+        </div>
+
+        <p class="overview-description">
+          Your planned spending across all categories.
+        </p>
+
+      </div>
+
+
+
+      <!-- SPENT -->
+
+      <div class="overview-stat">
+
+        <span class="stat-label">
+          SPENT
+        </span>
+
+        <strong>
+
+          {{ currencySymbol }}{{ displayTotalSpent | number:'1.0-0' }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- REMAINING -->
+
+      <div class="overview-stat">
+
+        <span class="stat-label">
+          REMAINING
+        </span>
+
+        <strong>
+
+          {{ currencySymbol }}{{ displayRemainingBudget | number:'1.0-0' }}
+
+        </strong>
+
+      </div>
+
+
+
+      <!-- USED -->
+
+      <div class="overview-stat">
+
+        <span class="stat-label">
+          USED
+        </span>
+
+        <strong>
+          {{ usagePercentage }}%
+        </strong>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ========================================
+         MONTHLY PROGRESS
+    ========================================= -->
+
+    <section class="progress-card">
+
+      <div class="progress-header">
+
+        <div>
+
+          <p class="eyebrow">
+            MONTHLY PROGRESS
+          </p>
+
+          <h2>
+            {{ usagePercentage }}% of your budget used
+          </h2>
+
+        </div>
+
+
+        <span class="progress-count">
+
+          {{ budgets.length }}
+
+          {{ budgets.length === 1
+            ? 'category'
+            : 'categories'
+          }}
+
+        </span>
+
+      </div>
+
+
+
+      <div class="main-progress">
+
+        <div
+          class="main-progress-fill"
+          [style.width.%]="
+            usagePercentage > 100
+              ? 100
+              : usagePercentage
+          "
+        ></div>
+
+      </div>
+
+
+
+      <div class="progress-footer">
+
+        <span>
+
+          {{ currencySymbol }}{{ displayTotalSpent | number:'1.0-0' }}
+
+          spent
+
+        </span>
+
+
+        <span>
+
+          {{ currencySymbol }}{{ displayTotalBudget | number:'1.0-0' }}
+
+          planned
+
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ========================================
+         BUDGET CATEGORIES
+    ========================================= -->
+
+    <section class="budgets-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            YOUR LIMITS
+          </p>
+
+          <h2>
+            Budget categories
+          </h2>
+
+          <p>
+            Keep your everyday spending within the limits you've set.
+          </p>
+
+        </div>
+
+
+        <span class="category-count">
+
+          {{ budgets.length }}
+
+          active
+
+        </span>
+
+      </div>
+
+
+
+      <!-- ======================================
+           BUDGET GRID
+      ======================================= -->
+
+      <div class="budget-grid">
+
+        @for (
+          budget of budgets;
+          track budget.id
+        ) {
+
+          <article
+            class="budget-card"
+            [class.over-budget]="isOverBudget(budget)"
+          >
+
+
+            <!-- CARD TOP -->
+
+            <div class="budget-card-top">
+
+              <div class="category-info">
+
+                <div class="category-icon">
+
+                  {{ budget.icon }}
+
+                </div>
+
+
+                <div>
+
+                  <h3>
+                    {{ budget.category }}
+                  </h3>
+
+                  <span class="category-label">
+                    Monthly limit
+                  </span>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- DELETE -->
+
+              <button
+                class="delete-button"
+                type="button"
+                (click)="deleteBudget(budget.id)"
+                title="Delete budget"
+              >
+
+                ×
+
+              </button>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 AMOUNTS
+            =================================== -->
+
+            <div class="budget-amounts">
+
+
+              <!-- SPENT -->
+
+              <div>
+
+                <span class="spent-label">
+                  Spent
+                </span>
+
+
+                <strong
+                  [class.danger-text]="
+                    isOverBudget(budget)
+                  "
+                >
+
+                  {{ currencySymbol }}{{ getDisplaySpent(budget) | number:'1.0-0' }}
+
+                </strong>
+
+              </div>
+
+
+
+              <!-- LIMIT -->
+
+              <div class="limit-amount">
+
+                <span class="spent-label">
+                  Limit
+                </span>
+
+
+                <strong>
+
+                  {{ currencySymbol }}{{ getDisplayLimit(budget) | number:'1.0-0' }}
+
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 PROGRESS
+            =================================== -->
+
+            <div class="budget-progress">
+
+              <div
+                class="budget-progress-fill"
+                [class.danger-progress]="
+                  isOverBudget(budget)
+                "
+                [style.width.%]="
+                  getProgressWidth(budget)
+                "
+              ></div>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 FOOTER
+            =================================== -->
+
+            <div class="budget-card-footer">
+
+
+              <!-- OVER BUDGET -->
+
+              @if (isOverBudget(budget)) {
+
+                <span class="over-text">
+
+                  Over budget by
+
+                  {{ currencySymbol }}{{
+                    convertAmount(
+                      budget.spent - budget.limit
+                    )
+                    | number:'1.0-0'
+                  }}
+
+                </span>
+
+              }
+
+
+              <!-- REMAINING -->
+
+              @else {
+
+                <span>
+
+                  {{ currencySymbol }}{{
+                    getDisplayRemaining(budget)
+                    | number:'1.0-0'
+                  }}
+
+                  remaining
+
+                </span>
+
+              }
+
+
+              <!-- PERCENTAGE -->
+
+              <strong
+                [class.danger-text]="
+                  isOverBudget(budget)
+                "
+              >
+
+                {{ getPercentage(budget) }}%
+
+              </strong>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+  }
+
+</div>
+
+
+
+<!-- ==========================================
+     ADD BUDGET MODAL
+=========================================== -->
+
+@if (showAddBudget) {
+
+  <div
+    class="modal-backdrop"
+    (click)="closeAddBudget()"
+  >
+
+    <div
+      class="modal-card"
+      (click)="$event.stopPropagation()"
+    >
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <p class="eyebrow">
+            MONTHLY PLANNING
+          </p>
+
+          <h2>
+            Add budget
+          </h2>
+
+          <p>
+            Set a spending limit for a category.
+          </p>
+
+        </div>
+
+
+        <button
+          class="modal-close"
+          type="button"
+          (click)="closeAddBudget()"
+        >
+
+          ×
+
+        </button>
+
+      </div>
+
+
+
+      <!-- ======================================
+           FORM
+      ======================================= -->
+
+      <form
+        class="budget-form"
+        (ngSubmit)="addBudget()"
+      >
+
+
+        <!-- CATEGORY -->
+
+        <div class="form-group">
+
+          <label for="budgetCategory">
+            Category
+          </label>
+
+
+          <select
+            id="budgetCategory"
+            name="category"
+            [(ngModel)]="newBudget.category"
+          >
+
+            <option value="Food">
+              🍔 Food
+            </option>
+
+            <option value="Transport">
+              🚕 Transport
+            </option>
+
+            <option value="Shopping">
+              🛍️ Shopping
+            </option>
+
+            <option value="Entertainment">
+              🎬 Entertainment
+            </option>
+
+            <option value="Bills">
+              📄 Bills
+            </option>
+
+            <option value="Health">
+              💊 Health
+            </option>
+
+            <option value="Other">
+              ◦ Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <!-- MONTHLY LIMIT -->
+
+        <div class="form-group">
+
+          <label for="budgetLimit">
+
+            Monthly limit
+
+            <span>
+              ({{ currencySymbol }})
+            </span>
+
+          </label>
+
+
+          <div class="amount-input">
+
+            <span>
+
+              {{ currencySymbol }}
+
+            </span>
+
+
+            <input
+              id="budgetLimit"
+              type="number"
+              name="limit"
+              [(ngModel)]="newBudget.limit"
+              min="1"
+              placeholder="5000"
+            />
+
+          </div>
+
+        </div>
+
+
+
+        <!-- CURRENCY INFO -->
+
+        @if (currencyRate !== 1) {
+
+          <p class="currency-info">
+
+            Amount will be saved securely in INR
+            and converted for display.
+
+          </p>
+
+        }
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeAddBudget()"
+          >
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="newBudget.limit <= 0"
+          >
+
+            Add budget
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+}

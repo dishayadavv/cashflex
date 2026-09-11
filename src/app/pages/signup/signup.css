@@ -1,0 +1,396 @@
+/* =========================================
+   CASHFLEX — SIGNUP
+   Quiet Luxury
+========================================= */
+
+:host {
+  display: block;
+
+  --ink: #17201d;
+  --charcoal: #202824;
+  --muted: #7b8580;
+
+  --background: #f7f7f4;
+  --surface: #ffffff;
+
+  --border: #e4e7e2;
+
+  --emerald: #527a68;
+
+  --error: #a45d5d;
+  --error-soft: #f3e7e5;
+
+  --success: #527a68;
+  --success-soft: #e3ece7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.auth-page {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  background: var(--background);
+
+  color: var(--ink);
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 28px;
+}
+
+.brand-mark {
+  width: 37px;
+  height: 37px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: var(--charcoal);
+
+  color: #f7f7f4;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.auth-brand strong {
+  display: block;
+
+  color: var(--ink);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: -0.2px;
+}
+
+.auth-brand span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 6px;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 390px;
+
+  padding: 31px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--surface);
+
+  box-shadow:
+    0 14px 45px rgba(32, 40, 36, 0.05);
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.auth-heading {
+  margin-bottom: 25px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  color: var(--muted);
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+.auth-heading h1 {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-size: 24px;
+  font-weight: 650;
+
+  letter-spacing: -0.7px;
+}
+
+.auth-heading p:last-child {
+  margin: 7px 0 0;
+
+  color: var(--muted);
+
+  font-size: 8px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #59645e;
+
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+  height: 39px;
+
+  padding: 0 11px;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #fafbf9;
+
+  color: var(--ink);
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #aab1ad;
+}
+
+.form-group input:focus {
+  border-color: #afc1b8;
+
+  background: white;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-message {
+  margin: 2px 0 13px;
+
+  padding: 9px 10px;
+
+  border: 1px solid #ead4d2;
+  border-radius: 6px;
+
+  background: var(--error-soft);
+
+  color: var(--error);
+
+  font-size: 7px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.success-message {
+  margin: 2px 0 13px;
+
+  padding: 9px 10px;
+
+  border: 1px solid #cddfd6;
+  border-radius: 6px;
+
+  background: var(--success-soft);
+
+  color: var(--success);
+
+  font-size: 7px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.signup-button {
+  width: 100%;
+  height: 39px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: var(--charcoal);
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.signup-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  opacity: 0.92;
+}
+
+.signup-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin: 23px 0 15px;
+
+  color: #a0a8a3;
+
+  font-size: 6px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+
+  flex: 1;
+
+  height: 1px;
+
+  background: var(--border);
+}
+
+
+/* =========================================
+   LOGIN LINK
+========================================= */
+
+.login-link {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--emerald);
+
+  text-decoration: none;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.login-link span {
+  font-size: 11px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.login-link:hover span {
+  transform: translateX(3px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.auth-footer {
+  margin: 20px 0 0;
+
+  color: #a1a9a4;
+
+  font-size: 6px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+  .auth-page {
+    padding: 20px 15px;
+  }
+
+  .auth-card {
+    padding: 25px 20px;
+  }
+
+}

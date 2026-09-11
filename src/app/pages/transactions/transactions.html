@@ -1,0 +1,613 @@
+<div class="transactions-page">
+
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+
+      <p class="eyebrow">
+        MONEY ACTIVITY
+      </p>
+
+      <h1>
+        Transactions
+      </h1>
+
+      <p class="subtitle">
+        A clear view of everything coming in and going out.
+      </p>
+
+    </div>
+
+
+    <button
+      class="add-button"
+      type="button"
+      (click)="openAddTransaction()"
+    >
+
+      <span>+</span>
+
+      Add transaction
+
+    </button>
+
+  </header>
+
+
+
+  <!-- SUMMARY -->
+
+  <section class="summary-grid">
+
+
+    <!-- INCOME -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon income">
+        ↗️
+      </div>
+
+      <div>
+
+        <span>
+          Total income
+        </span>
+
+        <strong>
+
+          {{ currencySymbol }}{{ displayTotalIncome | number:'1.0-2' }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- EXPENSE -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon expense">
+        ↘️
+      </div>
+
+      <div>
+
+        <span>
+          Total expenses
+        </span>
+
+        <strong>
+
+          {{ currencySymbol }}{{ displayTotalExpenses | number:'1.0-2' }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- BALANCE -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon balance">
+        {{ currencySymbol }}
+      </div>
+
+      <div>
+
+        <span>
+          Net balance
+        </span>
+
+        <strong>
+
+          {{ currencySymbol }}{{ displayBalance | number:'1.0-2' }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- COUNT -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon count">
+        #
+      </div>
+
+      <div>
+
+        <span>
+          Transactions
+        </span>
+
+        <strong>
+          {{ transactions().length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- FILTER BAR -->
+
+  <section class="filter-card">
+
+    <div class="search-box">
+
+      <span>
+        ⌕
+      </span>
+
+      <input
+        type="text"
+        placeholder="Search transactions"
+        [(ngModel)]="searchText"
+      />
+
+    </div>
+
+
+    <select
+      [(ngModel)]="selectedType"
+    >
+
+      <option>
+        All
+      </option>
+
+      <option>
+        Income
+      </option>
+
+      <option>
+        Expense
+      </option>
+
+    </select>
+
+
+    <select
+      [(ngModel)]="selectedCategory"
+    >
+
+      <option>
+        All
+      </option>
+
+      <option>
+        Food
+      </option>
+
+      <option>
+        Transport
+      </option>
+
+      <option>
+        Shopping
+      </option>
+
+      <option>
+        Salary
+      </option>
+
+      <option>
+        Bills
+      </option>
+
+      <option>
+        Entertainment
+      </option>
+
+      <option>
+        Health
+      </option>
+
+      <option>
+        Other
+      </option>
+
+    </select>
+
+  </section>
+
+
+
+  <!-- TRANSACTIONS -->
+
+  <section class="transaction-card">
+
+
+    <div class="transaction-heading">
+
+      <div>
+
+        <p class="card-label">
+          ACTIVITY
+        </p>
+
+        <h2>
+          All transactions
+        </h2>
+
+      </div>
+
+
+      <span class="transaction-count">
+
+        {{ filteredTransactions.length }}
+        records
+
+      </span>
+
+    </div>
+
+
+
+    <!-- TABLE HEADER -->
+
+    <div class="table-header">
+
+      <span>
+        TRANSACTION
+      </span>
+
+      <span>
+        CATEGORY
+      </span>
+
+      <span>
+        DATE
+      </span>
+
+      <span>
+        AMOUNT
+      </span>
+
+      <span></span>
+
+    </div>
+
+
+
+    <!-- TRANSACTION LIST -->
+
+    <div class="transaction-list">
+
+      @for (
+        transaction of filteredTransactions;
+        track transaction.id
+      ) {
+
+        <div class="transaction-row">
+
+
+          <!-- NAME -->
+
+          <div class="transaction-name">
+
+            <div class="transaction-icon">
+
+              {{ transaction.icon }}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                {{ transaction.title }}
+              </strong>
+
+              <small>
+
+                {{
+                  transaction.type === 'income'
+                    ? 'Money received'
+                    : 'Money spent'
+                }}
+
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- CATEGORY -->
+
+          <div>
+
+            <span class="category">
+
+              {{ transaction.category }}
+
+            </span>
+
+          </div>
+
+
+
+          <!-- DATE -->
+
+          <div class="date">
+
+            {{ transaction.date }}
+
+          </div>
+
+
+
+          <!-- AMOUNT -->
+
+          <div
+            class="amount"
+            [class.income]="transaction.type === 'income'"
+            [class.expense]="transaction.type === 'expense'"
+          >
+
+            {{
+              transaction.type === 'income'
+                ? '+'
+                : '-'
+            }}
+
+            {{ currencySymbol }}{{ convertAmount(transaction.amount) | number:'1.0-2' }}
+
+          </div>
+
+
+
+          <!-- DELETE -->
+
+          <button
+            type="button"
+            class="delete-button"
+            (click)="deleteTransaction(transaction.id)"
+            title="Delete transaction"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+      }
+
+
+
+      <!-- EMPTY -->
+
+      @if (filteredTransactions.length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ⌕
+          </div>
+
+          <h3>
+            No transactions found
+          </h3>
+
+          <p>
+            Try adjusting your search or filters.
+          </p>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ADD TRANSACTION MODAL -->
+
+  @if (showAddTransaction) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeAddTransaction()"
+    >
+
+      <div
+        class="modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <p>
+              CASHFLEX
+            </p>
+
+            <h2>
+
+              Add
+              {{
+                transactionType === 'income'
+                  ? 'Income'
+                  : 'Expense'
+              }}
+
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeAddTransaction()"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+
+        <!-- TYPE -->
+
+        <div class="type-switch">
+
+          <button
+            type="button"
+            [class.selected]="transactionType === 'expense'"
+            (click)="transactionType = 'expense'"
+          >
+
+            − Expense
+
+          </button>
+
+
+          <button
+            type="button"
+            [class.selected]="transactionType === 'income'"
+            (click)="transactionType = 'income'"
+          >
+
+            + Income
+
+          </button>
+
+        </div>
+
+
+
+        <!-- DESCRIPTION -->
+
+        <label>
+          Description
+        </label>
+
+        <input
+          type="text"
+          placeholder="e.g. Grocery shopping"
+          [(ngModel)]="newTransaction.title"
+        />
+
+
+
+        <!-- CATEGORY -->
+
+        <label>
+          Category
+        </label>
+
+        <select
+          [(ngModel)]="newTransaction.category"
+        >
+
+          <option>
+            Food
+          </option>
+
+          <option>
+            Transport
+          </option>
+
+          <option>
+            Shopping
+          </option>
+
+          <option>
+            Salary
+          </option>
+
+          <option>
+            Bills
+          </option>
+
+          <option>
+            Entertainment
+          </option>
+
+          <option>
+            Health
+          </option>
+
+          <option>
+            Other
+          </option>
+
+        </select>
+
+
+
+        <!-- AMOUNT -->
+
+        <label>
+          Amount
+        </label>
+
+        <div class="amount-input">
+
+          <span>
+            {{ currencySymbol }}
+          </span>
+
+          <input
+            type="number"
+            min="1"
+            placeholder="0"
+            [(ngModel)]="newTransaction.amount"
+          />
+
+        </div>
+
+
+
+        <!-- SAVE -->
+
+        <button
+          type="button"
+          class="save-button"
+          [disabled]="
+            !newTransaction.title.trim() ||
+            newTransaction.amount <= 0
+          "
+          (click)="addTransaction()"
+        >
+
+          Add transaction
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

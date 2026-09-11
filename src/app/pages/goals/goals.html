@@ -1,0 +1,690 @@
+<div class="goals-page">
+
+  <!-- ==========================================
+       PAGE HEADER
+       ========================================== -->
+
+  <header class="page-header">
+
+    <div>
+
+      <p class="eyebrow">
+        FINANCIAL GOALS
+      </p>
+
+      <h1>
+        Goals
+      </h1>
+
+      <p class="subtitle">
+        Turn your plans into progress, one step at a time.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openAddGoal()"
+    >
+
+      <span>＋</span>
+
+      Create goal
+
+    </button>
+
+  </header>
+
+
+
+  <!-- ==========================================
+       SUMMARY CARDS
+       ========================================== -->
+
+  <section class="summary-grid">
+
+
+    <!-- TOTAL TARGET -->
+
+    <div class="summary-card">
+
+      <div class="summary-top">
+
+        <span class="summary-label">
+          TOTAL TARGET
+        </span>
+
+        <span class="summary-icon">
+          ◇
+        </span>
+
+      </div>
+
+
+      <h2>
+        {{ currencySymbol }}{{ displayTotalTarget | number:'1.0-2' }}
+      </h2>
+
+
+      <p>
+        Across {{ goals.length }} goal{{ goals.length === 1 ? '' : 's' }}
+      </p>
+
+    </div>
+
+
+
+    <!-- TOTAL SAVED -->
+
+    <div class="summary-card">
+
+      <div class="summary-top">
+
+        <span class="summary-label">
+          TOTAL SAVED
+        </span>
+
+        <span class="summary-icon saved-icon">
+          ✓
+        </span>
+
+      </div>
+
+
+      <h2>
+        {{ currencySymbol }}{{ displayTotalSaved | number:'1.0-2' }}
+      </h2>
+
+
+      <p>
+        {{ overallPercentage }}% of your targets
+      </p>
+
+    </div>
+
+
+
+    <!-- REMAINING -->
+
+    <div class="summary-card">
+
+      <div class="summary-top">
+
+        <span class="summary-label">
+          REMAINING
+        </span>
+
+        <span class="summary-icon remaining-icon">
+          →
+        </span>
+
+      </div>
+
+
+      <h2>
+        {{ currencySymbol }}{{ displayTotalRemaining | number:'1.0-2' }}
+      </h2>
+
+
+      <p>
+        To reach all goals
+      </p>
+
+    </div>
+
+
+
+    <!-- PROGRESS -->
+
+    <div class="summary-card progress-summary">
+
+      <div class="summary-top">
+
+        <span class="summary-label">
+          OVERALL PROGRESS
+        </span>
+
+        <span class="summary-percentage">
+          {{ overallPercentage }}%
+        </span>
+
+      </div>
+
+
+      <div class="overall-progress">
+
+        <div
+          class="overall-progress-fill"
+          [style.width.%]="overallPercentage"
+        ></div>
+
+      </div>
+
+
+      <p>
+        Keep going — you're making progress.
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ==========================================
+       GOALS SECTION
+       ========================================== -->
+
+  <section class="goals-section">
+
+
+    <div class="section-heading">
+
+      <div>
+
+        <p class="eyebrow">
+          YOUR GOALS
+        </p>
+
+        <h2>
+          Savings plans
+        </h2>
+
+      </div>
+
+
+      @if (goals.length > 0) {
+
+        <span class="goal-count">
+
+          {{ goals.length }}
+          goal{{ goals.length === 1 ? '' : 's' }}
+
+        </span>
+
+      }
+
+    </div>
+
+
+
+    <!-- ==========================================
+         EMPTY STATE
+         ========================================== -->
+
+    @if (goals.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ◇
+        </div>
+
+
+        <h3>
+          No goals yet
+        </h3>
+
+
+        <p>
+          Create your first financial goal and start
+          building towards something meaningful.
+        </p>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="openAddGoal()"
+        >
+
+          ＋ Create your first goal
+
+        </button>
+
+      </div>
+
+    }
+
+
+
+    <!-- ==========================================
+         GOAL CARDS
+         ========================================== -->
+
+    @if (goals.length > 0) {
+
+      <div class="goals-grid">
+
+        @for (goal of goals; track goal.id) {
+
+          <article class="goal-card">
+
+
+            <!-- CARD HEADER -->
+
+            <div class="goal-card-header">
+
+              <div class="goal-title">
+
+                <div class="goal-icon">
+
+                  {{ goal.icon }}
+
+                </div>
+
+
+                <div>
+
+                  <h3>
+                    {{ goal.name }}
+                  </h3>
+
+                  <span>
+                    Target: {{ goal.date }}
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="delete-button"
+                title="Delete goal"
+                (click)="deleteGoal(goal.id)"
+              >
+
+                ×
+
+              </button>
+
+            </div>
+
+
+
+            <!-- AMOUNTS -->
+
+            <div class="goal-amounts">
+
+              <div>
+
+                <span class="amount-label">
+                  SAVED
+                </span>
+
+                <strong class="saved-amount">
+
+                  {{ currencySymbol }}{{ getDisplaySaved(goal) | number:'1.0-2' }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="target-amount">
+
+                <span class="amount-label">
+                  TARGET
+                </span>
+
+                <strong>
+
+                  {{ currencySymbol }}{{ getDisplayTarget(goal) | number:'1.0-2' }}
+
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- PROGRESS -->
+
+            <div class="goal-progress-area">
+
+              <div class="progress-labels">
+
+                <span>
+                  {{ getPercentage(goal) }}% complete
+                </span>
+
+                <span>
+                  {{ currencySymbol }}{{ getDisplayRemaining(goal) | number:'1.0-2' }}
+                  remaining
+                </span>
+
+              </div>
+
+
+              <div class="goal-progress">
+
+                <div
+                  class="goal-progress-fill"
+                  [style.width.%]="getProgressWidth(goal)"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ADD MONEY -->
+
+            <button
+              type="button"
+              class="add-money-button"
+              (click)="openAddMoney(goal)"
+            >
+
+              <span>＋</span>
+
+              Add money
+
+            </button>
+
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+
+
+  <!-- ==========================================
+       CREATE GOAL MODAL
+       ========================================== -->
+
+  @if (showAddGoal) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeAddGoal()"
+    >
+
+      <div
+        class="modal-card"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <div class="modal-header">
+
+          <div>
+
+            <p class="eyebrow">
+              NEW GOAL
+            </p>
+
+            <h2>
+              Create a goal
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeAddGoal()"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+
+        <!-- GOAL NAME -->
+
+        <div class="form-group">
+
+          <label>
+            Goal name
+          </label>
+
+          <input
+            type="text"
+            placeholder="e.g. New laptop"
+            [(ngModel)]="newGoal.name"
+          />
+
+        </div>
+
+
+
+        <!-- TARGET -->
+
+        <div class="form-group">
+
+          <label>
+            Target amount
+          </label>
+
+          <div class="money-input">
+
+            <span>
+              {{ currencySymbol }}
+            </span>
+
+            <input
+              type="number"
+              min="0"
+              placeholder="0"
+              [(ngModel)]="newGoal.target"
+            />
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DATE -->
+
+        <div class="form-group">
+
+          <label>
+            Target date
+          </label>
+
+          <input
+            type="date"
+            [(ngModel)]="newGoal.date"
+          />
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeAddGoal()"
+          >
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            [disabled]="
+              !newGoal.name.trim() ||
+              newGoal.target <= 0
+            "
+            (click)="addGoal()"
+          >
+
+            Create goal
+
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ==========================================
+       ADD MONEY MODAL
+       ========================================== -->
+
+  @if (showAddMoney && selectedGoal) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeAddMoney()"
+    >
+
+      <div
+        class="modal-card"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <div class="modal-header">
+
+          <div>
+
+            <p class="eyebrow">
+              ADD SAVINGS
+            </p>
+
+            <h2>
+              Add money
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeAddMoney()"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+
+        <!-- SELECTED GOAL -->
+
+        <div class="selected-goal">
+
+          <div class="goal-icon">
+
+            {{ selectedGoal.icon }}
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              {{ selectedGoal.name }}
+            </strong>
+
+            <span>
+
+              {{ currencySymbol }}{{ getDisplayRemaining(selectedGoal) | number:'1.0-2' }}
+              remaining
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- MONEY AMOUNT -->
+
+        <div class="form-group">
+
+          <label>
+            Amount to add
+          </label>
+
+          <div class="money-input large">
+
+            <span>
+              {{ currencySymbol }}
+            </span>
+
+            <input
+              type="number"
+              min="0"
+              placeholder="0"
+              [(ngModel)]="moneyAmount"
+            />
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeAddMoney()"
+          >
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            [disabled]="moneyAmount <= 0"
+            (click)="addMoney()"
+          >
+
+            Add money
+
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

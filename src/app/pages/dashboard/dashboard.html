@@ -1,0 +1,1184 @@
+<div class="dashboard-page">
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="dashboard-header">
+
+    <div>
+
+      <p class="eyebrow">
+        PERSONAL FINANCE
+      </p>
+
+      <h1>
+        Good morning, {{ userName }} 👋
+      </h1>
+
+      <p class="subtitle">
+        Here's your financial overview for today.
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        class="notification-button"
+        type="button"
+        (click)="toggleNotifications()"
+        [class.has-notifications]="notificationCount > 0"
+      >
+
+        🔔
+
+        @if (notificationCount > 0) {
+
+          <span class="notification-badge">
+            {{ notificationCount }}
+          </span>
+
+        }
+
+      </button>
+
+
+      <button
+        class="header-add-button"
+        type="button"
+        (click)="openAddTransaction('expense')"
+      >
+
+        <span>+</span>
+
+        Add transaction
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       NOTIFICATION PANEL
+       ===================================================== -->
+
+  @if (notificationOpen) {
+
+    <div class="notification-panel">
+
+      <div class="notification-panel-header">
+
+        <div>
+
+          <strong>
+            Notifications
+          </strong>
+
+          <span>
+            {{ notificationCount }}
+            update{{ notificationCount === 1 ? '' : 's' }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      @if (showBudgetAlert) {
+
+        <div class="notification-item">
+
+          <div class="notification-item-icon">
+
+            {{ budgetAlertLevel === 'danger' ? '!' : '⚠' }}
+
+          </div>
+
+          <div class="notification-item-content">
+
+            <strong>
+              {{ budgetAlertTitle }}
+            </strong>
+
+            <span>
+              {{ budgetAlertMessage }}
+            </span>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      @if (notificationCount === 0) {
+
+        <div class="notification-empty">
+
+          <div>
+            ✓
+          </div>
+
+          <strong>
+            You're all caught up
+          </strong>
+
+          <span>
+            No important updates right now.
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       BUDGET ALERT
+       ===================================================== -->
+
+  @if (showBudgetAlert) {
+
+    <div
+      class="budget-alert"
+      [class.budget-alert-danger]="budgetAlertLevel === 'danger'"
+    >
+
+      <div class="budget-alert-icon">
+
+        {{ budgetAlertLevel === 'danger' ? '!' : '⚠' }}
+
+      </div>
+
+      <div class="budget-alert-content">
+
+        <strong>
+          {{ budgetAlertTitle }}
+        </strong>
+
+        <span>
+          {{ budgetAlertMessage }}
+        </span>
+
+      </div>
+
+      <div class="budget-alert-percentage">
+
+        {{ budgetUsagePercentage | number:'1.0-0' }}%
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       BALANCE HERO
+       ===================================================== -->
+
+  <section class="balance-hero">
+
+    <div class="balance-main">
+
+      <div class="balance-label">
+        AVAILABLE BALANCE
+      </div>
+
+      <div class="balance-amount">
+
+        {{ currencySymbol }}{{ displayBalance | number }}
+
+      </div>
+
+      <div class="balance-status">
+
+        <span class="status-dot"></span>
+
+        You're on track with your spending
+
+      </div>
+
+    </div>
+
+
+    <div class="balance-stats">
+
+      <div class="balance-stat">
+
+        <div class="stat-icon">
+          ↗️
+        </div>
+
+        <div>
+
+          <span>
+            Income
+          </span>
+
+          <strong>
+            {{ currencySymbol }}{{ displayTotalIncome | number }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="balance-stat">
+
+        <div class="stat-icon">
+          ↘️
+        </div>
+
+        <div>
+
+          <span>
+            Expenses
+          </span>
+
+          <strong>
+            {{ currencySymbol }}{{ displayTotalExpenses | number }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="balance-stat">
+
+        <div class="stat-icon">
+          %
+        </div>
+
+        <div>
+
+          <span>
+            Savings rate
+          </span>
+
+          <strong>
+            {{ savingsPercentage }}%
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       QUICK ACTIONS
+       ===================================================== -->
+
+  <section class="quick-actions">
+
+    <button
+      class="quick-action expense-action"
+      type="button"
+      (click)="openAddTransaction('expense')"
+    >
+
+      <div class="quick-action-icon">
+        −
+      </div>
+
+      <div>
+
+        <strong>
+          Add Expense
+        </strong>
+
+        <small>
+          Track money spent
+        </small>
+
+      </div>
+
+      <span class="action-arrow">
+        →
+      </span>
+
+    </button>
+
+
+    <button
+      class="quick-action income-action"
+      type="button"
+      (click)="openAddTransaction('income')"
+    >
+
+      <div class="quick-action-icon">
+        +
+      </div>
+
+      <div>
+
+        <strong>
+          Add Income
+        </strong>
+
+        <small>
+          Record money received
+        </small>
+
+      </div>
+
+      <span class="action-arrow">
+        →
+      </span>
+
+    </button>
+
+
+    <a
+      routerLink="/budget"
+      class="quick-action"
+    >
+
+      <div class="quick-action-icon">
+        ◫
+      </div>
+
+      <div>
+
+        <strong>
+          Manage Budget
+        </strong>
+
+        <small>
+          Control your spending
+        </small>
+
+      </div>
+
+      <span class="action-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      routerLink="/analytics"
+      class="quick-action"
+    >
+
+      <div class="quick-action-icon">
+        ◔
+      </div>
+
+      <div>
+
+        <strong>
+          View Analytics
+        </strong>
+
+        <small>
+          Understand your money
+        </small>
+
+      </div>
+
+      <span class="action-arrow">
+        →
+      </span>
+
+    </a>
+
+  </section>
+
+
+  <!-- =====================================================
+       DASHBOARD INTELLIGENCE
+       ===================================================== -->
+
+  <section class="intelligence-card">
+
+    <div class="intelligence-header">
+
+      <div class="intelligence-title">
+
+        <div class="intelligence-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <p>
+            CASHFLEX INTELLIGENCE
+          </p>
+
+          <h2>
+            Your financial snapshot
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="health-badge"
+        [class.health-excellent]="financialHealth === 'Excellent'"
+        [class.health-good]="financialHealth === 'Good'"
+        [class.health-warning]="financialHealth === 'Needs attention'"
+      >
+
+        <span></span>
+
+        {{ financialHealth }}
+
+      </div>
+
+    </div>
+
+
+    <div class="intelligence-grid">
+
+
+      <!-- SMART INSIGHT -->
+
+      <div class="intelligence-main">
+
+        <div class="insight-label">
+          ✨ SMART INSIGHT
+        </div>
+
+        <h3>
+          {{ smartInsightTitle }}
+        </h3>
+
+        <p>
+          {{ smartInsightMessage }}
+        </p>
+
+      </div>
+
+
+      <!-- TOP CATEGORY -->
+
+      <div class="intelligence-stat">
+
+        <div class="intelligence-stat-icon">
+          {{ topSpendingIcon }}
+        </div>
+
+        <div>
+
+          <span>
+            TOP SPENDING
+          </span>
+
+          <strong>
+            {{ topSpendingCategory }}
+          </strong>
+
+          @if (topSpendingAmount > 0) {
+
+            <small>
+              {{ currencySymbol }}{{ topSpendingDisplayAmount | number }}
+              · {{ topSpendingPercentage }}%
+            </small>
+
+          } @else {
+
+            <small>
+              No spending recorded
+            </small>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- SAVINGS -->
+
+      <div class="intelligence-stat">
+
+        <div class="intelligence-stat-icon savings-icon">
+          %
+        </div>
+
+        <div>
+
+          <span>
+            SAVINGS RATE
+          </span>
+
+          <strong>
+            {{ savingsPercentage }}%
+          </strong>
+
+          <small>
+            {{ currencySymbol }}{{ displaySavings | number }} saved
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUDGET -->
+
+      <div class="intelligence-stat">
+
+        <div class="intelligence-stat-icon budget-icon">
+          ◫
+        </div>
+
+        <div>
+
+          <span>
+            BUDGET USAGE
+          </span>
+
+          <strong>
+            {{ budgetUsagePercentage }}%
+          </strong>
+
+          <small>
+            {{ intelligenceBudgetMessage }}
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- PERSONALIZED TIP -->
+
+    <div class="personalized-tip">
+
+      <div class="tip-icon">
+        💡
+      </div>
+
+      <div>
+
+        <strong>
+          CashFlex tip
+        </strong>
+
+        <span>
+          {{ personalizedTip }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       DASHBOARD GRID
+       ===================================================== -->
+
+  <div class="dashboard-grid">
+
+
+    <!-- SPENDING -->
+
+    <section class="dashboard-card spending-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <p class="card-label">
+            SPENDING
+          </p>
+
+          <h2>
+            Where your money goes
+          </h2>
+
+        </div>
+
+        <button
+          class="period-button"
+          type="button"
+        >
+          This month ▾
+        </button>
+
+      </div>
+
+
+      <div class="spending-total">
+
+        <strong>
+          {{ currencySymbol }}{{ displayTotalExpenses | number }}
+        </strong>
+
+        <span>
+          total expenses
+        </span>
+
+      </div>
+
+
+      <div class="spending-bars">
+
+        <div class="spending-item">
+
+          <div class="spending-info">
+
+            <span>
+              Food
+            </span>
+
+            <strong>
+              {{ currencySymbol }}{{ getCategoryDisplayAmount('Food') | number }}
+            </strong>
+
+          </div>
+
+          <div class="spending-track">
+
+            <div
+              class="spending-fill"
+              [style.width.%]="getCategoryBarWidth('Food')"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="spending-item">
+
+          <div class="spending-info">
+
+            <span>
+              Shopping
+            </span>
+
+            <strong>
+              {{ currencySymbol }}{{ getCategoryDisplayAmount('Shopping') | number }}
+            </strong>
+
+          </div>
+
+          <div class="spending-track">
+
+            <div
+              class="spending-fill"
+              [style.width.%]="getCategoryBarWidth('Shopping')"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="spending-item">
+
+          <div class="spending-info">
+
+            <span>
+              Entertainment
+            </span>
+
+            <strong>
+              {{ currencySymbol }}{{ getCategoryDisplayAmount('Entertainment') | number }}
+            </strong>
+
+          </div>
+
+          <div class="spending-track">
+
+            <div
+              class="spending-fill"
+              [style.width.%]="getCategoryBarWidth('Entertainment')"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="spending-item">
+
+          <div class="spending-info">
+
+            <span>
+              Transport
+            </span>
+
+            <strong>
+              {{ currencySymbol }}{{ getCategoryDisplayAmount('Transport') | number }}
+            </strong>
+
+          </div>
+
+          <div class="spending-track">
+
+            <div
+              class="spending-fill"
+              [style.width.%]="getCategoryBarWidth('Transport')"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BUDGET -->
+
+    <section class="dashboard-card budget-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <p class="card-label">
+            MONTHLY PLAN
+          </p>
+
+          <h2>
+            Budget
+          </h2>
+
+        </div>
+
+        <a
+          routerLink="/budget"
+          class="text-link"
+        >
+          View all →
+        </a>
+
+      </div>
+
+
+      <div class="budget-overview">
+
+        <div
+          class="budget-circle"
+          [style.--budget-progress]="budgetUsagePercentage * 3.6"
+        >
+
+          <div>
+
+            <strong>
+              {{ budgetUsagePercentage }}%
+            </strong>
+
+            <span>
+              used
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="budget-summary">
+
+          <strong>
+            {{ currencySymbol }}{{ displayBudgetSpent | number }}
+          </strong>
+
+          <span>
+            of {{ currencySymbol }}{{ displayMonthlyBudget | number }} spent
+          </span>
+
+          <small>
+            {{ currencySymbol }}{{ displayBudgetRemaining | number }} remaining
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="budget-list">
+
+        <div class="budget-row">
+
+          <div class="budget-row-top">
+
+            <span>
+              🍔 Food
+            </span>
+
+            <strong>
+              {{ getCategoryPercentage('Food') }}%
+            </strong>
+
+          </div>
+
+          <div class="budget-track">
+
+            <div
+              class="budget-fill"
+              [style.width.%]="getCategoryBarWidth('Food')"
+            ></div>
+
+          </div>
+
+          <small>
+            {{ currencySymbol }}{{ getCategoryDisplayAmount('Food') | number }} spent
+          </small>
+
+        </div>
+
+
+        <div class="budget-row">
+
+          <div class="budget-row-top">
+
+            <span>
+              🚕 Transport
+            </span>
+
+            <strong>
+              {{ getCategoryPercentage('Transport') }}%
+            </strong>
+
+          </div>
+
+          <div class="budget-track">
+
+            <div
+              class="budget-fill"
+              [style.width.%]="getCategoryBarWidth('Transport')"
+            ></div>
+
+          </div>
+
+          <small>
+            {{ currencySymbol }}{{ getCategoryDisplayAmount('Transport') | number }} spent
+          </small>
+
+        </div>
+
+
+        <div class="budget-row">
+
+          <div class="budget-row-top">
+
+            <span>
+              🛍️ Shopping
+            </span>
+
+            <strong>
+              {{ getCategoryPercentage('Shopping') }}%
+            </strong>
+
+          </div>
+
+          <div class="budget-track">
+
+            <div
+              class="budget-fill"
+              [style.width.%]="getCategoryBarWidth('Shopping')"
+            ></div>
+
+          </div>
+
+          <small>
+            {{ currencySymbol }}{{ getCategoryDisplayAmount('Shopping') | number }} spent
+          </small>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- =====================================================
+       RECENT TRANSACTIONS
+       ===================================================== -->
+
+  <section class="dashboard-card transactions-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <p class="card-label">
+          RECENT ACTIVITY
+        </p>
+
+        <h2>
+          Recent Transactions
+        </h2>
+
+      </div>
+
+      <a
+        routerLink="/transactions"
+        class="text-link"
+      >
+        View all →
+      </a>
+
+    </div>
+
+
+    <div class="transaction-list">
+
+      @for (
+        transaction of transactions();
+        track transaction.id
+      ) {
+
+        <div class="transaction-row">
+
+          <div class="transaction-info">
+
+            <div class="transaction-icon">
+              {{ transaction.icon }}
+            </div>
+
+            <div>
+
+              <strong>
+                {{ transaction.title }}
+              </strong>
+
+              <span>
+                {{ transaction.category }} · {{ transaction.date }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="transaction-amount"
+            [class.income]="transaction.type === 'income'"
+            [class.expense]="transaction.type === 'expense'"
+          >
+
+            {{ transaction.type === 'income' ? '+' : '-' }}
+
+            {{ currencySymbol }}{{ convertAmount(transaction.amount) | number }}
+
+          </div>
+
+
+          <button
+            class="delete-button"
+            type="button"
+            (click)="deleteTransaction(transaction.id)"
+          >
+            ×
+          </button>
+
+        </div>
+
+      }
+
+
+      @if (transactions().length === 0) {
+
+        <div class="empty-state">
+
+          <div>
+            💸
+          </div>
+
+          <h3>
+            No transactions yet
+          </h3>
+
+          <p>
+            Add your first transaction to get started.
+          </p>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ADD TRANSACTION MODAL
+       ===================================================== -->
+
+  @if (showAddTransaction) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeAddTransaction()"
+    >
+
+      <div
+        class="modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <p>
+              CASHFLEX
+            </p>
+
+            <h2>
+
+              Add
+              {{
+                transactionType === 'income'
+                  ? 'Income'
+                  : 'Expense'
+              }}
+
+            </h2>
+
+          </div>
+
+
+          <button
+            class="close-button"
+            type="button"
+            (click)="closeAddTransaction()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div class="type-switch">
+
+          <button
+            type="button"
+            [class.selected]="transactionType === 'expense'"
+            (click)="transactionType = 'expense'"
+          >
+            − Expense
+          </button>
+
+
+          <button
+            type="button"
+            [class.selected]="transactionType === 'income'"
+            (click)="transactionType = 'income'"
+          >
+            + Income
+          </button>
+
+        </div>
+
+
+        <label>
+          Description
+        </label>
+
+        <input
+          type="text"
+          placeholder="e.g. Grocery shopping"
+          [(ngModel)]="newTransaction.title"
+        />
+
+
+        <label>
+          Category
+        </label>
+
+        <select
+          [(ngModel)]="newTransaction.category"
+        >
+
+          <option>
+            Food
+          </option>
+
+          <option>
+            Transport
+          </option>
+
+          <option>
+            Shopping
+          </option>
+
+          <option>
+            Salary
+          </option>
+
+          <option>
+            Bills
+          </option>
+
+          <option>
+            Entertainment
+          </option>
+
+          <option>
+            Health
+          </option>
+
+          <option>
+            Other
+          </option>
+
+        </select>
+
+
+        <label>
+          Amount
+        </label>
+
+        <div class="amount-input">
+
+          <span>
+            {{ currencySymbol }}
+          </span>
+
+          <input
+            type="number"
+            min="1"
+            placeholder="0"
+            [(ngModel)]="newTransaction.amount"
+          />
+
+        </div>
+
+
+        <button
+          class="save-button"
+          type="button"
+          (click)="addTransaction()"
+        >
+          Add Transaction
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

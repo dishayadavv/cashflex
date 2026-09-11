@@ -1,0 +1,777 @@
+/* =========================================
+   CASHFLEX BUDGET
+   Quiet Luxury Finance UI
+========================================= */
+
+.budget-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 34px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: #7b8580;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #17201d;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.page-subtitle {
+  margin: 10px 0 0;
+  color: #7b8580;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.primary-button,
+.secondary-button {
+  border: 0;
+  border-radius: 8px;
+  min-height: 42px;
+  padding: 0 17px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #202824;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(23, 32, 29, 0.08);
+}
+
+.primary-button span {
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 9px 24px rgba(23, 32, 29, 0.14);
+}
+
+.primary-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.secondary-button {
+  background: #f1f3ef;
+  color: #202824;
+  border: 1px solid #e4e7e2;
+}
+
+.secondary-button:hover {
+  background: #e8ebe7;
+}
+
+
+/* =========================================
+   OVERVIEW
+========================================= */
+
+.overview-card {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  align-items: center;
+  min-height: 150px;
+  margin-bottom: 20px;
+  padding: 30px 32px;
+  border: 1px solid #e4e7e2;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 30px rgba(23, 32, 29, 0.025);
+}
+
+.overview-main {
+  padding-right: 30px;
+}
+
+.overview-amount {
+  margin-top: 2px;
+  color: #17201d;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.overview-description {
+  margin: 8px 0 0;
+  color: #8a938f;
+  font-size: 11px;
+}
+
+.overview-stat {
+  min-height: 58px;
+  padding-left: 26px;
+  border-left: 1px solid #e4e7e2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-label {
+  margin-bottom: 8px;
+  color: #8a938f;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+.overview-stat strong {
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+
+/* =========================================
+   PROGRESS CARD
+========================================= */
+
+.progress-card {
+  padding: 25px 28px;
+  margin-bottom: 42px;
+  border: 1px solid #e4e7e2;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.progress-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.progress-header h2 {
+  margin: 0;
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.progress-count {
+  color: #8a938f;
+  font-size: 10px;
+  padding-top: 3px;
+}
+
+.main-progress {
+  width: 100%;
+  height: 7px;
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #edf0ed;
+}
+
+.main-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #527a68;
+  transition: width 0.35s ease;
+}
+
+.progress-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  color: #9aa19e;
+  font-size: 9px;
+}
+
+
+/* =========================================
+   BUDGET SECTION
+========================================= */
+
+.budgets-section {
+  width: 100%;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.section-heading > div > p:last-child {
+  margin: 7px 0 0;
+  color: #8a938f;
+  font-size: 11px;
+}
+
+.category-count {
+  color: #7b8580;
+  font-size: 10px;
+}
+
+
+/* =========================================
+   BUDGET GRID
+========================================= */
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.budget-card {
+  padding: 23px 24px 21px;
+  border: 1px solid #e4e7e2;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 8px 26px rgba(23, 32, 29, 0.022);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.budget-card:hover {
+  transform: translateY(-2px);
+  border-color: #d9ddd8;
+  box-shadow: 0 12px 32px rgba(23, 32, 29, 0.055);
+}
+
+.budget-card.over-budget {
+  border-color: #ead6d4;
+}
+
+
+/* =========================================
+   CARD TOP
+========================================= */
+
+.budget-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-icon {
+  width: 39px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #f1f3ef;
+  font-size: 17px;
+}
+
+.category-info h3 {
+  margin: 0;
+  color: #202824;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.category-label {
+  display: block;
+  margin-top: 4px;
+  color: #9aa19e;
+  font-size: 9px;
+}
+
+.delete-button {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #a5ada9;
+  font-size: 17px;
+  font-weight: 300;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.delete-button:hover {
+  background: #f5eae8;
+  color: #a45d5d;
+}
+
+
+/* =========================================
+   AMOUNTS
+========================================= */
+
+.budget-amounts {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 25px;
+}
+
+.budget-amounts > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.spent-label {
+  margin-bottom: 5px;
+  color: #9aa19e;
+  font-size: 9px;
+}
+
+.budget-amounts strong {
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.limit-amount {
+  text-align: right;
+}
+
+.limit-amount strong {
+  color: #7b8580;
+  font-size: 16px;
+}
+
+
+/* =========================================
+   CARD PROGRESS
+========================================= */
+
+.budget-progress {
+  width: 100%;
+  height: 5px;
+  margin-top: 19px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #edf0ed;
+}
+
+.budget-progress-fill {
+  height: 100%;
+  min-width: 2px;
+  border-radius: inherit;
+  background: #527a68;
+  transition: width 0.3s ease;
+}
+
+.danger-progress {
+  background: #a45d5d;
+}
+
+
+/* =========================================
+   CARD FOOTER
+========================================= */
+
+.budget-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #8a938f;
+  font-size: 9px;
+}
+
+.budget-card-footer strong {
+  color: #527a68;
+  font-size: 10px;
+}
+
+.over-text,
+.danger-text {
+  color: #a45d5d !important;
+}
+
+
+/* =========================================
+   LOADING / EMPTY / ERROR
+========================================= */
+
+.state-card {
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 45px;
+  border: 1px solid #e4e7e2;
+  border-radius: 14px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.state-card h3 {
+  margin: 18px 0 7px;
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.state-card p {
+  max-width: 360px;
+  margin: 0 0 20px;
+  color: #8a938f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.loader {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #e3e8e4;
+  border-top-color: #527a68;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.state-icon,
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+}
+
+.empty-icon {
+  background: #e3ece7;
+  color: #527a68;
+}
+
+.state-icon {
+  background: #f3e7e5;
+  color: #a45d5d;
+}
+
+.empty-card h2 {
+  margin: 0 0 9px;
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  background: rgba(23, 32, 29, 0.42);
+  backdrop-filter: blur(5px);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 28px;
+  border: 1px solid #e4e7e2;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 25px 70px rgba(23, 32, 29, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #202824;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.modal-header p:last-child {
+  margin: 7px 0 0;
+  color: #8a938f;
+  font-size: 11px;
+}
+
+.modal-close {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: #f1f3ef;
+  color: #6f7975;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #e8ebe7;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.budget-form {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  color: #4f5955;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 45px;
+  padding: 0 13px;
+  border: 1px solid #dfe3df;
+  border-radius: 8px;
+  outline: none;
+  background: #fafbf9;
+  color: #202824;
+  font-family: inherit;
+  font-size: 12px;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  border-color: #527a68;
+  box-shadow: 0 0 0 3px rgba(82, 122, 104, 0.1);
+}
+
+.amount-input {
+  position: relative;
+}
+
+.amount-input span {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7b8580;
+  font-size: 13px;
+}
+
+.amount-input input {
+  padding-left: 29px;
+}
+
+
+/* =========================================
+   MODAL ACTIONS
+========================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .overview-card {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .overview-main {
+    grid-column: 1 / -1;
+    padding-right: 0;
+  }
+
+  .overview-stat {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .budget-page {
+    padding-bottom: 30px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    margin-bottom: 25px;
+  }
+
+  .page-header h1 {
+    font-size: 30px;
+  }
+
+  .page-header .primary-button {
+    width: 100%;
+  }
+
+  .overview-card {
+    grid-template-columns: 1fr 1fr;
+    padding: 23px;
+  }
+
+  .overview-amount {
+    font-size: 28px;
+  }
+
+  .budget-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .progress-card {
+    padding: 21px;
+    margin-bottom: 32px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .overview-card {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-main {
+    grid-column: auto;
+  }
+
+  .overview-stat {
+    border-top: 1px solid #e4e7e2;
+    padding-top: 14px;
+  }
+
+  .modal-backdrop {
+    padding: 15px;
+  }
+
+  .modal-card {
+    padding: 23px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+}
