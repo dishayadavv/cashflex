@@ -49,10 +49,17 @@ export class SettingsService {
 
     const snapshot = await getDoc(settingsRef);
 
+    /*
+     * If the settings document does not exist,
+     * create it with neutral defaults.
+     *
+     * IMPORTANT:
+     * Never use as a default name.
+     */
     if (!snapshot.exists()) {
 
       const defaultSettings: UserSettings = {
-        name: 'Disha',
+        name: 'User',
         email: user.email ?? '',
         currency: 'INR',
         monthlyBudget: 20000,
@@ -61,7 +68,10 @@ export class SettingsService {
         weeklySummary: true
       };
 
-      await setDoc(settingsRef, defaultSettings);
+      await setDoc(
+        settingsRef,
+        defaultSettings
+      );
 
       console.log('SETTINGS: Default settings created.');
 
@@ -71,7 +81,7 @@ export class SettingsService {
     const data = snapshot.data();
 
     return {
-      name: String(data['name'] ?? 'Disha'),
+      name: String(data['name'] ?? 'User'),
       email: String(data['email'] ?? user.email ?? ''),
       currency: String(data['currency'] ?? 'INR'),
       monthlyBudget: Number(data['monthlyBudget'] ?? 20000),
@@ -102,7 +112,10 @@ export class SettingsService {
       'settings'
     );
 
-    console.log('SETTINGS: Saving to:', settingsRef.path);
+    console.log(
+      'SETTINGS: Saving to:',
+      settingsRef.path
+    );
 
     await setDoc(
       settingsRef,

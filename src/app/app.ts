@@ -53,7 +53,7 @@ export class App implements OnInit {
   // USER
   // ==========================================
 
-  userName = 'Disha';
+  userName = 'User';
 
   userEmail = '';
 

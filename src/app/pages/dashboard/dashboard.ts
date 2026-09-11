@@ -42,7 +42,7 @@ export class Dashboard implements OnInit {
   // USER
   // =====================================================
 
-  userName = 'Disha';
+  userName = 'User';
 
 
   // =====================================================

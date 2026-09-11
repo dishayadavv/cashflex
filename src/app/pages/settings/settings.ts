@@ -70,7 +70,7 @@ export class Settings implements OnInit {
   // SETTINGS DATA
   // ==========================================
 
-  name = 'Disha';
+  name = 'User';
 
   email = '';
 
@@ -157,7 +157,7 @@ export class Settings implements OnInit {
 
 
       this.name =
-        settings.name || 'Disha';
+        settings.name || 'User';
 
 
       this.email =
